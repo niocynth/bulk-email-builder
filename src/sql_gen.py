@@ -3,7 +3,7 @@
 
 
 ### Generate SQL to create a new ticket trigger based on email criteria
-def gen_new_ticket_trigger(email_address, email_account_id, email_field_parent_id=None, email_field_child_id=None, actions_list=None):
+def gen_new_ticket_trigger(email_address, email_account_id, email_field_parent_id=None, email_field_child_id=None, actions_list=""):
     # declare variables
     additional_actions = ""
     email_field_term = ""
@@ -20,9 +20,8 @@ def gen_new_ticket_trigger(email_address, email_account_id, email_field_parent_i
     terms = "{\\\"@DATA\\\": {\\\"terms\\\": [{\\\"set_terms\\\": [{\\\"op\\\": \\\"is\\\", \\\"type\\\": \\\"CheckEmailToAddress\\\", \\\"options\\\": {\\\"email\\\": \\\"" + email_address + "\\\"}}]}, {\\\"set_terms\\\": [{\\\"op\\\": \\\"is\\\", \\\"type\\\": \\\"CheckEmailCcAddress\\\", \\\"options\\\": {\\\"email\\\": \\\"" + email_address +"\\\"}}]}, {\\\"set_terms\\\": [{\\\"op\\\": \\\"contains\\\", \\\"type\\\": \\\"CheckEmailHeader\\\", \\\"options\\\": {\\\"name\\\": \\\"Received\\\", \\\"value\\\": \\\"" + email_address + "\\\"}}]}" + email_field_term + "], \\\"version\\\": 1}, \\\"@CLASS\\\": \\\"Application\\\\\\\\DeskPRO\\\\\\\\Tickets\\\\\\\\Triggers\\\\\\\\TriggerTerms\\\"}"
 
     # construct any additional actions
-    if actions_list:
-        # Todo - Just referencing itself for now
-        additional_actions = additional_actions
+    if actions_list != "":
+        additional_actions += actions_list
 
     # construct actions (escaped JSON object)
     actions = "{\\\"@DATA\\\": {\\\"actions\\\": [{\\\"type\\\": \\\"SetEmailAccount\\\", \\\"options\\\": {\\\"email_account_id\\\": \\\"" + email_account_id + "\\\"}}" + additional_actions + "], \\\"version\\\": 1}, \\\"@CLASS\\\": \\\"Application\\\\\\\\DeskPRO\\\\\\\\Tickets\\\\\\\\Triggers\\\\\\\\TriggerActions\\\"}"
@@ -31,7 +30,8 @@ def gen_new_ticket_trigger(email_address, email_account_id, email_field_parent_i
 
     return query
 
-def gen_ticket_update_trigger(email_address, email_field_parent_id, email_field_child_id, email_account_id, actions_list=None):
+### Generate SQL to create a ticket update trigger based on email criteria
+def gen_ticket_update_trigger(email_address, email_field_parent_id, email_field_child_id, email_account_id, actions_list=""):
     # declare variables
     additional_actions = ""
 
@@ -42,9 +42,8 @@ def gen_ticket_update_trigger(email_address, email_field_parent_id, email_field_
     terms = "{\\\"@DATA\\\": {\\\"terms\\\": [{\\\"set_terms\\\": [{\\\"op\\\": \\\"is\\\", \\\"type\\\": \\\"CheckTicketField" + email_field_parent_id + "\\\", \\\"options\\\": {\\\"value\\\": [\\\"" + email_field_child_id + "\\\"], \\\"field_id\\\": \\\"" + email_field_parent_id + "\\\", \\\"type_name\\\": \\\"choice\\\"}}]}], \\\"version\\\": 1}, \\\"@CLASS\\\": \\\"Application\\\\\\\\DeskPRO\\\\\\\\Tickets\\\\\\\\Triggers\\\\\\\\TriggerTerms\\\"}"
 
     # construct any additional actions
-    if actions_list:
-        # Todo - Just referencing itself for now
-        additional_actions = additional_actions 
+    if actions_list != "":
+        additional_actions += actions_list
 
     # construct actions (escaped JSON object)
     actions = "{\\\"@DATA\\\": {\\\"actions\\\": [{\\\"type\\\": \\\"SetEmailAccount\\\", \\\"options\\\": {\\\"email_account_id\\\": \\\"" + email_account_id + "\\\"}}" + additional_actions + "], \\\"version\\\": 1}, \\\"@CLASS\\\": \\\"Application\\\\\\\\DeskPRO\\\\\\\\Tickets\\\\\\\\Triggers\\\\\\\\TriggerActions\\\"}"
