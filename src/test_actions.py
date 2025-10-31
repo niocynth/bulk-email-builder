@@ -81,6 +81,21 @@ class TestAddActions(unittest.TestCase):
         print(f"\n------\nResult\n------\n{query}\n")
 
         self.assertEqual(query, validation)
+    
+    def test_add_actions_with_custom_field_and_agent(self):
+        actions = [
+            (ActionType.SET_CUSTOM_FIELD, ("19", "20")),
+            (ActionType.SET_AGENT, "2"),
+            (ActionType.SET_ROUND_ROBIN, "1")
+        ]
+        query = add_actions(actions)
+        validation = ', {\\\"type\\\": \\\"SetTicketField19\\\", \\\"options\\\": {\\\"op\\\": \\\"set\\\", \\\"value\\\": \\\"20\\\"}}, {\\\"type\\\": \\\"SetAgent\\\", \\\"options\\\": {\\\"agent_id\\\": \\\"2\\\"}}, {\\\"type\\\": \\\"SetRoundRobin\\\", \\\"options\\\": {\\\"id\\\": \\\"1\\\"}}'
+
+        print("\n\n=============\nTest Add Actions With Custom Field And Agent:\n=============")
+        print(f"\n--------\nExpected\n--------\n{validation}")
+        print(f"\n------\nResult\n------\n{query}\n")
+
+        self.assertEqual(query, validation)
 
 if __name__ == "__main__":
     unittest.main()

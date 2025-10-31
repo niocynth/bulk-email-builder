@@ -1,6 +1,5 @@
-
-
-
+def gen_email_account():
+    pass
 
 ### Generate SQL to create a new ticket trigger based on email criteria
 def gen_new_ticket_trigger(email_address, email_account_id, email_field_parent_id=None, email_field_child_id=None, actions_list=""):
